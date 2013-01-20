@@ -1,4 +1,4 @@
-tob
+TTB - Tannyr the Badass
 ===
 
-Tannyr the Badass: An ascii adventure
+Tannyr the Badass: An ascii adventure.
