@@ -1,0 +1,20 @@
+Video game plan:
+  General gameplay style: Isometric RPG
+  
+  Important Objects:
+    Items, Maps, Actors, Tilesets, Menus, inventory
+
+  Objects:
+    pass
+  
+  Development plan:
+    Create main character, and give him name, gender, inventory, stats, 
+
+  Main Components:
+    Ascii Graphics Engine(AGE), Menu System
+
+  Main loop flow:
+    Start Menu => Main Game.  
+
+  Production Flow:
+    Coords to ascii grid =>  Enter Command + Enter => Scrolling map => Constant keyboard input feed => 
