@@ -19,21 +19,28 @@ import Age, World, Actor, os
 # Increase movement resolution of grid.
 
 
-screen = Age.Graphics()
-test_map = World.World('Test Map', [8,6], 'Test map')
-player = Actor.Actor(name='Player 1', tile='|     |  P  |_ _ _')
-
-test_map.add_entity(player)
-screen.render(test_map)
-command = 0
-while command != 'q':
-    command = input('ENTER MOVEMENT COMMAND(wsad,(q)uit):')
-    if command in  ['w','s','a','d']:
-        os.system('cls')
-        player.move(command)       
-    elif command == 'q':
-        pass
-    else:
-        print('Invalid Command')
 
 
+def main():
+    screen = Age.Graphics()
+    test_map = World.World('Test Map', [8,6], 'Test map')
+    player = Actor.Actor(name='Tannyr', health = 100, tile='|     |  P  |_ _ _', inventory = ['Sword', 'Shield'])
+    
+    test_map.add_entity(player)
+    # First loop kickoff
+    screen.render(test_map)
+    player.ui()
+    command = None
+
+    while command != 'q':
+        command = input('ENTER MOVEMENT COMMAND(wsad,(q)uit):')
+        if command in  ['w','s','a','d']:
+            player.move(command)
+        elif command == 'q':
+            pass
+        else:
+            print('Invalid Command')
+
+
+
+main()

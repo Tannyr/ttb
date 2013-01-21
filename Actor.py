@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import os
+
 class Actor:
     def __init__(self, name='Default', gender='m', inventory=[], health=0, tile='|     |     |_ _ _'):
         self.name = name
@@ -16,20 +18,57 @@ class Actor:
         RIGHT = 'd'
         DOWN = 's'
         LEFT = 'a'
-        self.save_old_location()     
+        self.save_old_location()
+        
         if direction == UP:
-            self.location[1] -=1
+            new_coord = self.location[0],self.location[1]-1 
+            if self.current_world.is_empty(new_coord):
+                self.location[1] -=1
+            else:
+                print ('Invalid move.')
+                return 
         elif direction == DOWN:
-            self.location[1] +=1
+            new_coord = self.location[0],self.location[1]+1             
+            if self.current_world.is_empty(new_coord):
+                self.location[1] +=1
+            else:
+                print ('Invalid move.')
+                return
         elif direction == RIGHT:
-            self.location[0] +=1
+            new_coord = self.location[0],self.location[0]+1             
+            if self.current_world.is_empty(new_coord):
+                self.location[0] +=1
+            else:
+                print ('Invalid move.')
+                return
         elif direction ==LEFT:
-            self.location[0] -=1
+            new_coord = self.location[0],self.location[0]-1             
+            if self.current_world.is_empty(new_coord):
+                self.location[0] -=1
+            else:
+                print ('Invalid move.')
+                return
         else:
-            return 'Invalid Selection'
+            print ('Invalid move due to programmer error.  Nice job, guy.')
         self.current_world.revert_old_location(self)
         self.current_world.update()
+        os.system('cls')
         self.call_for_render()
+        self.ui()
+
+    def list_inventory(self):
+        item_list = ''
+        for item in self.inventory:
+            item_list += '{}, '.format(item)
+            if item == self.inventory[-1]:
+                item_list = item_list[0:-2]
+        return item_list
+
+    def ui(self):
+        print ("{}\n HEALTH: {}\n INVENTORY: {}\n".format(self.name, self.health, self.list_inventory() ))
+        # Player
+        # HEALTH: 0
+        # INVENTORY: Bat, Ball, Barbell.
 
     # ABSRACTION METHODS
     def save_old_location(self):

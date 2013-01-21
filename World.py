@@ -49,6 +49,12 @@ class World:
                 y +=1
             x+=1
 
+    def is_empty(self, location):
+        if location in self.coordinates:
+            return True
+        else:
+            return False
+
     def update_entity(self, entity):
         e_x = entity.location[0]
         e_y = entity.location[1]
