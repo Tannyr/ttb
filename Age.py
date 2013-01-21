@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 class Graphics:
     def __init__(self):
         pass

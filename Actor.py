@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 class Actor:
     def __init__(self, name='Default', gender='m', inventory=[], health=0, tile='|     |     |_ _ _'):
         self.name = name

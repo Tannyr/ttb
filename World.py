@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 class World:
     def __init__(self, name='DEFAULT WORLD', size=[4,4], description='NO DESCRIPTION'):
         self.name = name

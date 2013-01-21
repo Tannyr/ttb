@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import Age, World, Actor, os
 
 # Current Goal:
@@ -26,7 +27,7 @@ test_map.add_entity(player)
 screen.render(test_map)
 command = 0
 while command != 'q':
-    command = input('ENTER COMMAND(WSAD):')
+    command = input('ENTER MOVEMENT COMMAND(wsad,(q)uit):')
     if command in  ['w','s','a','d']:
         os.system('cls')
         player.move(command)       
