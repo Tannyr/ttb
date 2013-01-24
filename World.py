@@ -21,6 +21,9 @@ class World:
         entity.current_world = self
         self.update()
 
+    def update_original_world(self, location, tile):
+        self.coordinates_original[location] = tile
+
     def update(self):
         for entity in self.entities:
             self.update_entity(entity)
@@ -42,7 +45,7 @@ class World:
         self.entities.remove(entity)
 
     # ABSTRACTION FUNCTIONS
-    def populate_world(self, tile):
+    def populate_world(self, tile='|     |     |_ _ _'):
         for x in range(self.width):
             for y in range(self.height):
                 self.coordinates[x,y] = tile
@@ -69,3 +72,5 @@ class World:
         for i in range (len(self.coordinates)):
             display += "{}: {}\n".format(x[i], self.coordinates[x[i]])
         return display
+
+

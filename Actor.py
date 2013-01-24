@@ -35,14 +35,14 @@ class Actor:
                 print ('Invalid move.')
                 return
         elif direction == RIGHT:
-            new_coord = self.location[0],self.location[0]+1             
+            new_coord = self.location[0]+1,self.location[1]           
             if self.current_world.is_empty(new_coord):
                 self.location[0] +=1
             else:
                 print ('Invalid move.')
                 return
         elif direction ==LEFT:
-            new_coord = self.location[0],self.location[0]-1             
+            new_coord = self.location[0]-1,self.location[1]         
             if self.current_world.is_empty(new_coord):
                 self.location[0] -=1
             else:

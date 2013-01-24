@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.3
 import Age, World, Actor, os
 
 # Current Goal:
@@ -23,7 +23,7 @@ import Age, World, Actor, os
 
 def main():
     screen = Age.Graphics()
-    test_map = World.World('Test Map', [8,6], 'Test map')
+    test_map = World.World('Test Map', [10,3], 'Test map')
     player = Actor.Actor(name='Tannyr', health = 100, tile='|     |  P  |_ _ _', inventory = ['Sword', 'Shield'])
     
     test_map.add_entity(player)
