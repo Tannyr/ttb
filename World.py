@@ -1,76 +1,63 @@
 #!/usr/bin/env python
+
 class World:
-    def __init__(self, name='DEFAULT WORLD', size=[4,4], description='NO DESCRIPTION'):
-        self.name = name
-        self.description = description
-        self.coordinates = {}
-        self.entities = []
-        self.size = size
-        self.width = size[0]
-        self.height =  size[1]
+    def __init__(self, name= 'DEFAULT WORLD', size= [4,4], description= 'NO DESCRIPTION'):
+        empty_tile= '          _ _ _' #15 CHARS
         
-        self.renderer = 0
-        self.empty_tile = '|     |     |_ _ _'
+        # Attributes
+        self.name= name
+        self.description= description
+        self.coordinates= {}
+        self.size= size
+        self.width= size[0]
+        self.height=  size[1]       
 
-        self.populate_world(self.empty_tile)
-        self.coordinates_original = dict(self.coordinates)
+        self.__create_empty_world(empty_tile)
+        self.coordinates_original= dict(self.coordinates)
 
-    def add_entity(self, entity):
-        self.entities.append(entity)
-        self.update_entity(entity)
-        entity.current_world = self
-        self.update()
-
-    def update_original_world(self, location, tile):
-        self.coordinates_original[location] = tile
-
-    def update(self):
-        for entity in self.entities:
-            self.update_entity(entity)
-
-    def revert_old_location(self, entity):
-        old_x = entity.old_location[0]
-        old_y = entity.old_location[1]
-        new_x = entity.location[0]
-        new_y = entity.location[1]
+    def render(self):
+        top_row, middle_row, bottom_row= (0,5), (5,10), (10,15)       
+        display= " {}\n".format('_ _ _ '* self.width)
         
-        self.coordinates[old_x,old_y] = \
-        self.coordinates_original[new_x,new_y]
+        for y in range(self.height):
+            for z in range(3):
+                for x in range(self.width):
+                    display+= "|"
+                    if z== 0:
+                        display+= self.coordinates[x,y][top_row[0]:top_row[1]]
+                    elif z== 1:
+                        display+= self.coordinates[x,y][middle_row[0]:middle_row[1]]
+                    elif z== 2:
+                        display+= self.coordinates[x,y][bottom_row[0]:bottom_row[1]]
+                        
+                    if x== self.width-1:
+                        display += "|\n"
+        print (display)
 
-    def remove_entity(self, entiy):
-        e_x = entity.location[0]
-        e_y = entity.location[1]
-        
-        self.coordinates[e_x,e_y] = self.coordinates_original[e_x,e_y]
-        self.entities.remove(entity)
-
-    # ABSTRACTION FUNCTIONS
-    def populate_world(self, tile='|     |     |_ _ _'):
+    # Helper Methods
+    def __create_empty_world(self, tile):
         for x in range(self.width):
             for y in range(self.height):
-                self.coordinates[x,y] = tile
-                y +=1
-            x+=1
+                self.coordinates[x,y]= tile
+                y+= 1
+            x+= 1
+            
+# Test Functions
+def test():
+    test = World()
+    print ("Test world created! \n \
+    World name: {},\t Description: {},\n Size: {},\t Width: {},\t Height: {},\n \
+    Renderer: {} \n \n \
+    Coordinates: \n \
+    {}".format(test.name, test.description, test.size, test.width, test.height, test.renderer, display_coordinates(test)))
 
-    def is_empty(self, location):
-        if location in self.coordinates:
-            return True
-        else:
-            return False
+def display_coordinates(world):
+    x= list(world.coordinates)
+    x.sort()
+    display= "{} coordinates total.\n".format(len(world.coordinates))
+    for i in range (len(world.coordinates)):
+        display+= "{}: {}\n".format(x[i], world.coordinates[x[i]])
+    return display
 
-    def update_entity(self, entity):
-        e_x = entity.location[0]
-        e_y = entity.location[1]
-        
-        self.coordinates[e_x,e_y] = entity.tile
-
-    # TEST / DEBUG FUNCTIONS
-    def display_coordinates(self):
-        x = list(self.coordinates)
-        x.sort()
-        display = "{} coordinates total.\n".format(len(self.coordinates))
-        for i in range (len(self.coordinates)):
-            display += "{}: {}\n".format(x[i], self.coordinates[x[i]])
-        return display
 
 
