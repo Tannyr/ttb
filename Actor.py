@@ -1,61 +1,21 @@
 #!/usr/bin/env python
-import os
+from os import system
 
 class Actor:
-    def __init__(self, name='Default', gender='m', inventory=[], health=0, tile='|     |     |_ _ _'):
+    def __init__(self, name='Default', inventory=[], health=0, tile='          _ _ _'):
+
+        # Attributes
+        self.UP = 'w'
+        self.RIGHT = 'd'
+        self.DOWN = 's'
+        self.LEFT = 'a'
         self.name = name
-        self.gender = gender
         self.inventory=inventory
         self.health=health
-        self.location = [0,0]
+        self.location = 0,0
         self.current_world = 0
         self.tile = tile
-        self.old_location = list(self.location)
         
-    # PRIMARY METHODS
-    def move(self, direction):
-        UP = 'w'
-        RIGHT = 'd'
-        DOWN = 's'
-        LEFT = 'a'
-        self.save_old_location()
-        
-        if direction == UP:
-            new_coord = self.location[0],self.location[1]-1 
-            if self.current_world.is_empty(new_coord):
-                self.location[1] -=1
-            else:
-                print ('Invalid move.')
-                return 
-        elif direction == DOWN:
-            new_coord = self.location[0],self.location[1]+1             
-            if self.current_world.is_empty(new_coord):
-                self.location[1] +=1
-            else:
-                print ('Invalid move.')
-                return
-        elif direction == RIGHT:
-            new_coord = self.location[0]+1,self.location[1]           
-            if self.current_world.is_empty(new_coord):
-                self.location[0] +=1
-            else:
-                print ('Invalid move.')
-                return
-        elif direction ==LEFT:
-            new_coord = self.location[0]-1,self.location[1]         
-            if self.current_world.is_empty(new_coord):
-                self.location[0] -=1
-            else:
-                print ('Invalid move.')
-                return
-        else:
-            print ('Invalid move due to programmer error.  Nice job, guy.')
-        self.current_world.revert_old_location(self)
-        self.current_world.update()
-        os.system('cls')
-        self.call_for_render()
-        self.ui()
-
     def list_inventory(self):
         item_list = ''
         for item in self.inventory:
@@ -64,18 +24,66 @@ class Actor:
                 item_list = item_list[0:-2]
         return item_list
 
+    #WORLD INTERACTION METHODS
+    def move(self, direction):
+        x = self.location[0]
+        y = self.location[1]
+        
+        if direction == self.UP:
+            new_coord = x, y-1 
+        elif direction == self.DOWN:
+            new_coord = x, y+1             
+        elif direction == self.RIGHT:
+            new_coord = x+1, y           
+        elif direction == self.LEFT:
+            new_coord = x-1, y
+        self.move_to_location(new_coord)           
+        system('cls')
+        
+        self.ui()
+        self.__request_render()
+
+    def join_world(self, world):
+        self.current_world = world
+        self.__add_to_new_location(self.location)
+
+    def leave_world(self, world):
+        x = self.location[0]
+        y = self.location[1]        
+        world.coordinates[x,y] = self.coordinates_original[x,y]
+
+    def move_to_location(self, new_location):
+        self.__remove_from_old_location(self.location)
+        self.__add_to_new_location(new_location)
+        self.location = new_location
+
     def ui(self):
-        print ("{}\n HEALTH: {}\n INVENTORY: {}\n".format(self.name, self.health, self.list_inventory() ))
-        # Player
-        # HEALTH: 0
-        # INVENTORY: Bat, Ball, Barbell.
+        print ("{}\n HEALTH: {}\t INVENTORY: {}\n"
+               .format(self.name, self.health, self.list_inventory() ))    
+        
+    def __remove_from_old_location(self, location):      
+        self.current_world.coordinates[location[0],location[1]] = self.current_world.coordinates_original[location[0],location[1]]
 
-    # ABSRACTION METHODS
-    def save_old_location(self):
-        self.old_location = list(self.location)
+    def __add_to_new_location(self, location):
+        self.current_world.coordinates[location[0],location[1]] = self.tile
 
-    def call_for_render(self):
-        self.current_world.renderer.render(self.current_world)
+    def is_legal_move(self, direction):
+        x,y = self.location
+        if direction == self.UP:
+            new_coord = x, y-1 
+        elif direction == self.DOWN:
+            new_coord = x, y+1
+        elif direction == self.RIGHT:
+            new_coord = x+1, y           
+        elif direction ==self.LEFT:
+            new_coord = x-1, y
+        if new_coord in self.current_world.coordinates:
+            return True
+        else:
+            return False
+
+    def __request_render(self):
+        self.current_world.render()
         
         
 
