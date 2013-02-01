@@ -77,7 +77,9 @@ class Actor:
             new_coord = x+1, y           
         elif direction ==self.LEFT:
             new_coord = x-1, y
-        if new_coord in self.current_world.coordinates:
+        elif direction == 'q':
+            new_coord = 'q'
+        if new_coord in self.current_world.coordinates or new_coord =='q':
             return True
         else:
             return False

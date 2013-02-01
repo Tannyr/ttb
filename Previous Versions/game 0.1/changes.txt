@@ -1,1 +1,0 @@
-started project, wrote one file that consisted of a start menu, and a new game option that took you to a printed grid.

@@ -1,3 +1,0 @@
-.2 - movement works, but only moving to the right. 
-
-.4 - first fully functional board that a player can move around on.

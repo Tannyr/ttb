@@ -1,35 +1,18 @@
 #!/usr/bin/env python3.3
 
-# Current Goal:
-# *******************************
-# THE LEGEND OF TANNYR THE BADASS
-# *******************************
-# Start Menu:
-# -New Game
-# --10x8 world, moveable player, collision detection. !
-# --Win status: Picks up item and inspects it.
-# -Load Game
-# --Loads map with world-entities locations saved.
-# -Exit
-# --Closes Window
-
-# Future goals:
-# Remove [enter] key neccesity and add refresh rate,
-# Increase movement resolution of grid.
-
-import Actor, Aui, World
+import Actor, Aui, World, Item
 from os import system
 
 def main():
     title_menu =Aui.Menu(logo(),[('1', 'NEW GAME', (new_game, None))])
     current_menu = title_menu
-    current_menu.display() # prints menu's title and options
+    current_menu.display() 
     main.selected_option = current_menu.retrieve_selection()  
 
-    while main.selected_option != 'q':     
-        current_menu = main.selected_option[0](main.selected_option[1]) if main.selected_option[0] != 'q' else current_menu
-        current_menu.display()
-        main.selected_option = current_menu.retrieve_selection()  
+    while main.selected_option  != 'q':
+        current_menu = main.selected_option[0](main.selected_option[1]) if main.selected_option != 'q' else current_menu
+        current_menu.display() if main.selected_option != 'q' else current_menu
+        main.selected_option = current_menu.retrieve_selection() if main.selected_option != 'q' else current_menu
 
 def move(direction):
     while main.player.is_legal_move(direction) != True:
@@ -40,11 +23,12 @@ def move(direction):
         return 'q'
     main.player.move(direction)
     return main.handle_movement_menu
- 
-    # Main Menu Functions
+
 def new_game(*args):
     system('cls')
     main.current_world = World.World()
+    main.potion = Item.Item(name='Health Potion', description='Made by 4 loko', image='     4LOKO_ _ _')
+    main.current_world.add_item(main.potion, (2,2))
     main.player = Actor.Actor('Tannyr', inventory=[], health=100, tile='       P  _ _ _')
     main.player.join_world(main.current_world)
     main.handle_movement_menu = Aui.Menu("Move Player:",[('w', 'UP', (move, 'w')),

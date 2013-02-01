@@ -10,11 +10,19 @@ class World:
         self.coordinates= {}
         self.size= size
         self.width= size[0]
-        self.height=  size[1]       
+        self.height=  size[1]
+        self.items= []
 
         self.__create_empty_world(empty_tile)
         self.coordinates_original= dict(self.coordinates)
 
+    def add_item(self, item, location):
+        self.__add(item, location)
+        self.items.append(item)
+        
+    def __add(self, to_add, where_to_add):
+        self.coordinates[where_to_add]= to_add.image
+        
     def render(self):
         top_row, middle_row, bottom_row= (0,5), (5,10), (10,15)       
         display= " {}\n".format('_ _ _ '* self.width)
